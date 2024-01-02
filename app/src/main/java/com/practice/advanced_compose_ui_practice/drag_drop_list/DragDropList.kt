@@ -1,4 +1,4 @@
-package com.practice.advanced_compose_ui_practice.drag_drop_list.utils
+package com.practice.advanced_compose_ui_practice.drag_drop_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +27,7 @@ import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.practice.advanced_compose_ui_practice.ui.theme.MyTheme
+import com.practice.advanced_compose_ui_practice.drag_drop_list.utils.rememberDragDropListState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

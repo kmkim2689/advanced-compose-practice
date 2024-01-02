@@ -7,16 +7,14 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
-import com.practice.advanced_compose_ui_practice.drag_drop_list.utils.DragDropList
+import com.practice.advanced_compose_ui_practice.drag_drop_list.DragDropList
 import com.practice.advanced_compose_ui_practice.drag_drop_list.utils.move
-import com.practice.advanced_compose_ui_practice.light_dark.ComposeThemeScreen
 import com.practice.advanced_compose_ui_practice.light_dark.utils.AppTheme
 import com.practice.advanced_compose_ui_practice.light_dark.utils.ThemeSetting
 import com.practice.advanced_compose_ui_practice.ui.theme.MyTheme
