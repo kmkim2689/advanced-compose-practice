@@ -17,6 +17,7 @@ import com.practice.advanced_compose_ui_practice.drag_drop_list.DragDropList
 import com.practice.advanced_compose_ui_practice.drag_drop_list.utils.move
 import com.practice.advanced_compose_ui_practice.light_dark.utils.AppTheme
 import com.practice.advanced_compose_ui_practice.light_dark.utils.ThemeSetting
+import com.practice.advanced_compose_ui_practice.shorts.ui.ShortView
 import com.practice.advanced_compose_ui_practice.ui.theme.MyTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -55,13 +56,21 @@ class MainActivity : ComponentActivity() {
 //                            theme = changedTheme
 //                        }
 //                    )
-                    DragDropList(
-                        items = reorderItems,
-                        modifier = Modifier.fillMaxSize(),
-                        onMove = { fromIndex, toIndex ->
-                            reorderItems.move(fromIndex, toIndex)
-                        }
-                    )
+//                    DragDropList(
+//                        items = reorderItems,
+//                        modifier = Modifier.fillMaxSize(),
+//                        onMove = { fromIndex, toIndex ->
+//                            reorderItems.move(fromIndex, toIndex)
+//                        }
+//                    )
+
+                    ShortView(
+                        activity = this@MainActivity,
+                        videoItemsUrl = videoUrls,
+                        clickItemPosition = 0
+                    ) {
+
+                    }
                 }
             }
         }
@@ -75,3 +84,8 @@ val reorderItems = listOf<String>(
     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"
 ).toMutableStateList() // 이렇게 해주어야 위치 변경 시 올바르게 값이 바뀌지 않고 원하는 대로 유지된다.
 
+val videoUrls = listOf(
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
+)

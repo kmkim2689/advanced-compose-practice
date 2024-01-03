@@ -1,15 +1,11 @@
 package com.practice.advanced_compose_ui_practice.shorts.utils
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.ParentDataModifier
-import androidx.compose.ui.unit.Density
 import kotlin.math.roundToInt
 
 class PagerState(
@@ -110,10 +106,5 @@ class PagerState(
             "currentPage=$currentPage, currentPageOffset=$currentPageOffset}"
 }
 
-@Immutable
-private data class PageData(val page: Int): ParentDataModifier {
-    override fun Density.modifyParentData(parentData: Any?): Any? = this@PageData
-}
-
-private val Measurable.page: Int
+val Measurable.page: Int
     get() = (parentData as? PageData)?.page ?: error("no page data for measurable $this")

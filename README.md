@@ -375,6 +375,14 @@ fun DragDropList(
 
 ## 3. Shorts Video Template(Sliding Up & Down)
 
+### 필요 라이브러리들
+```
+implementation 'com.google.android.exoplayer:exoplayer:2.14.1'
+
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+```
+
 ### 키워드
 * inline, crossinline, noinline
 * Modifier.composed
