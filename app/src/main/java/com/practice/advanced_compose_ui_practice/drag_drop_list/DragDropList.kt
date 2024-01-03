@@ -48,7 +48,7 @@ fun DragDropList(
             .pointerInput(Unit) {
                 detectDragGesturesAfterLongPress(
                     onDrag = { change, dragAmount ->
-                        change.consumeAllChanges()
+                        change.consume()
                         dragDropListState.onDrag(offset = dragAmount)
 
                         if (overScrollJob?.isActive == true) return@detectDragGesturesAfterLongPress
@@ -80,7 +80,7 @@ fun DragDropList(
                         val offsetOrNull = dragDropListState.elementDisplacement.takeIf {
                             index == dragDropListState.currentIndexOfDraggedItem
                         }
-                        Modifier.graphicsLayer {
+                        graphicsLayer {
                             translationY = offsetOrNull ?: 0f
                         }
                     }

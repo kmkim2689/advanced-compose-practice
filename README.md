@@ -217,7 +217,7 @@ class DragDropListState(
     // 드래그가 되는 대상의 아이템에 대한 정보 : LazyListItemInfo
     var initiallyDraggedElement by mutableStateOf<LazyListItemInfo?>(null)
 
-    // 드래르가 되는 대상의 아이템이 현재 어느 인덱스에 위치하는지에 대한 정보 : wjdtn
+    // 드래그가 되는 대상의 아이템이 현재 어느 인덱스에 위치하는지에 대한 정보 : wjdtn
     var currentIndexOfDraggedItem by mutableStateOf<Int?>(null)
 
     // 드래그 되는 대상의 드래그 전 상단 끝, 하단 끝 오프셋을 얻어옴
@@ -301,3 +301,108 @@ class DragDropListState(
     }
 }
 ```
+
+* DragDropList
+```
+@Composable
+fun DragDropList(
+    items: MutableList<String>,
+    onMove: (Int, Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scope = rememberCoroutineScope()
+    var overScrollJob by remember {
+        mutableStateOf<Job?>(null)
+    }
+    val dragDropListState = rememberDragDropListState(onMove = onMove)
+
+    LazyColumn(
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectDragGesturesAfterLongPress(
+                    onDrag = { change, dragAmount ->
+                        change.consume()
+                        dragDropListState.onDrag(offset = dragAmount)
+
+                        if (overScrollJob?.isActive == true) return@detectDragGesturesAfterLongPress
+
+                        dragDropListState
+                            .checkForOverScroll()
+                            .takeIf { it != 0f }
+                            ?.let {
+                                overScrollJob = scope.launch {
+                                    dragDropListState.lazyListState.scrollBy(it)
+                                }
+                            } ?: kotlin.run { overScrollJob?.cancel() }
+                    },
+                    onDragStart = { offset ->
+                        dragDropListState.onDragStart(offset)
+                    },
+                    onDragEnd = { dragDropListState.onDragInterrupted() },
+                    onDragCancel = { dragDropListState.onDragInterrupted() }
+                )
+            }
+            .fillMaxSize()
+            .padding(10.dp),
+        state = dragDropListState.lazyListState
+    ) {
+        itemsIndexed(items) {index, item ->
+            Column(
+                modifier = Modifier
+                    .composed {
+                        val offsetOrNull = dragDropListState.elementDisplacement.takeIf {
+                            index == dragDropListState.currentIndexOfDraggedItem
+                        }
+                        graphicsLayer {
+                            translationY = offsetOrNull ?: 0f
+                        }
+                    }
+                    .background(
+                        color = Color.Gray,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                Text(text = item, fontSize = 16.sp)
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+    }
+}
+```
+
+## 3. Shorts Video Template(Sliding Up & Down)
+
+### 키워드
+* inline, crossinline, noinline
+* Modifier.composed
+* mutableStateOf()의 policy parameter => structuralEqualityPolicy()
+* Int/Long.coerceIn(minimumValue: Int/Long, maximumValue: Int/Long): Int/Long
+  * ensures that the value lies in the specific range between minimumValue and maximumValue
+  * 만약 해당 값이 minimumValue보다 작다면, minimumValue를 반환하고, 해당 값이 maximumValue보다 크다면, maximumValue 반환
+* 함수의 매개변수로 특정 클래스의 확장함수를 넘겨주기 : 클래스명.() -> 리턴타입
+* Animatable : 클래스명이 아니라 함수이다.
+  * 
+
+### 구현
+
+* ModifierExtensions.kt : 클릭 시 ripple 효과가 없는 clickable을 구현하기 위함
+```
+inline fun Modifier.clickableWithoutRipple(
+    crossinline onClick: () -> Unit
+): Modifier = composed { 
+    this.clickable(
+        indication = null,
+        interactionSource = remember {
+            MutableInteractionSource()
+        },
+        onClick = {
+            onClick()
+        }
+    )
+}
+```
+
+* PagerState

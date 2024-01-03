@@ -3,8 +3,10 @@ package com.practice.advanced_compose_ui_practice.drag_drop_list.utils
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyListState
 
-// 여기서 absolute란, Drag의 대상이 되는 / 선택된 아이템의 인덱스 번호를 가리킨다.
+// 여기서 absolute란, "전체 lazylist의 아이템 중에서"(현재 시점에서 보이는 기준에서의 인덱스 x) Drag의 대상이 되는 / 선택된 아이템의 인덱스 번호를 가리킨다.
 fun LazyListState.getVisibleItemInfoFor(absolute: Int): LazyListItemInfo? {
+    // lazylistiteminfo는 현재 시점에서 보이는 인덱스를 기반으로 얻어올 수 있기 때문에 뺄셈 작업이 필요함
+    // 전체 lazylist에서의 인덱스 - 현재 시점에서 보이는 첫 번째 아이템의 인덱스 -> 현재 시점에서 보이는 선택된 아이템의 인덱스를 의믜
     return this.layoutInfo.visibleItemsInfo.getOrNull(absolute - this.layoutInfo.visibleItemsInfo.first().index)
 }
 
